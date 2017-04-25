@@ -1,3 +1,4 @@
+import Data.List
 {-
  - For this exercise, we are dealing with a type for colours of the rainbow
  - The typeclass is defined here, and note its English spelling.
@@ -7,10 +8,10 @@
  - Have a play with the Colour in ghci, try the succ and pred functions and so on.
  -}
 data Colour = Red | Orange | Yellow | Green | Blue | Indigo | Violet
-    deriving (Eq, Ord, Show, Bounded, Enum)   
+    deriving (Eq, Ord, Show, Bounded, Enum)
 
 {-
- - Again, you should be able to write these functions in one line, 
+ - Again, you should be able to write these functions in one line,
  - using the information from the chapter http://learnyouahaskell.com/types-and-typeclasses
  - and the chapter before
  -}
@@ -19,10 +20,12 @@ data Colour = Red | Orange | Yellow | Green | Blue | Indigo | Violet
  - The Colour typeclass is of type Ord
  - What is the "first" (or least) colour
  -}
-firstColour = undefined
+firstColour :: Colour
+firstColour = minBound :: Colour
 
 -- List the colours in reverse order
-reverseColourOrder = undefined
+reverseColourOrder :: [Colour]
+reverseColourOrder = reverse [Violet, Indigo ..]
 
 {-
  - Mix two colours together, to produce the average value of the two.
@@ -31,4 +34,13 @@ reverseColourOrder = undefined
  - For example: paintMix Green Violet = Indigo
  - Hint: Integer division can be performed with the quot function: quot 7 2 = 3
  -}
-paintMix c1 c2 = undefined
+paintMix :: Colour -> Colour -> Colour
+paintMix c1 c2 = if biggerColour > succ minorColour then paintMix biggerColour (succ minorColour) else minorColour
+    where
+    biggerColour = max c1 c2
+    minorColour = min c1 c2
+
+main = do
+    print $ firstColour
+    print $ reverseColourOrder
+    print $ paintMix Green Violet
